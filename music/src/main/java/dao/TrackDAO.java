@@ -6,7 +6,6 @@ import model.*;
 import java.util.Collection;
 import java.util.ArrayList;
 
-
 public class TrackDAO {
     private JdbcTemplate jdbcTemplate;
 

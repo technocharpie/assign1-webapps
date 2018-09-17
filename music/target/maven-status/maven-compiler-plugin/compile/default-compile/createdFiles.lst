@@ -1,0 +1,5 @@
+main/Application.class
+dao/TrackDAO.class
+model/Album.class
+model/Track.class
+dao/AlbumDAO.class
