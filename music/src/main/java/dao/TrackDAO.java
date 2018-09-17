@@ -28,13 +28,32 @@ public class TrackDAO {
 
     public Track getTrack(int id){
         Track track = new Track(id);
-        //TODO: Implement this CRUD function
+        String sql1 = "SELECT title FROM tracks WHERE id = ?";
+        String sql2 = "SELECT album FROM tracks WHERE id = ?";
+        String title = this.jdbcTemplate.queryForObject(sql1, new Object[] {track.getId()}, String.class);
+        String albumId = this.jdbcTemplate.queryForObject(sql2, new Object[] {track.getId()}, String.class);
+        if (title != null)
+        {
+            track.setTitle(title);
+            track.setAlbumId(Integer.parseInt(albumId));
+        }
+        else
+        {
+            track.setTitle("[no title]");
+            track.setAlbumId(0);
+        }
         return track;
     }
 
     public Collection<Track> getAllTracks(){
         Collection<Track> tracks = new ArrayList<Track>();
-        //TODO: Implement this CRUD function
+        
+        this.jdbcTemplate.query(
+                "SELECT * FROM tracks", new Object[] { },
+                (rs, rowNum) -> new Track(rs.getInt("id"), rs.getString("title"), rs.getInt("album"))
+        ).forEach(track -> tracks.add(track));
+
+
         return tracks;
     }
 

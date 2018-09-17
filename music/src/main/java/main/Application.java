@@ -32,24 +32,49 @@ public class Application implements CommandLineRunner {
         AlbumDAO albumDAO = new AlbumDAO(jdbcTemplate);
         TrackDAO trackDAO = new TrackDAO(jdbcTemplate);
 
-        log.info("Creating tables");
 
+        //'albums' and 'tracks' tables creation
+        log.info("\n\n\n");
+        log.info("Creating tables");
         jdbcTemplate.execute("DROP TABLE IF EXISTS tracks");
         jdbcTemplate.execute("CREATE TABLE tracks(" +
                 "id SERIAL, title VARCHAR(255), album INT)");
-        trackDAO.createTrack(new Track("Track 1", 42));
-        trackDAO.createTrack(new Track("Track 2", 42));
-        trackDAO.createTrack(new Track ("Track 3", 42));
-        trackDAO.getTracksByAlbumId(42).forEach(track -> log.info(track.toString()));
-
-
         jdbcTemplate.execute("DROP TABLE IF EXISTS albums");
         jdbcTemplate.execute("CREATE TABLE albums(" +
                 "id INT, title VARCHAR(255))");
 
 
+        //createAlbum() createTrack() tests
+        log.info("\n\n\n");
+        log.info("Creating tracks for Album1 (id = 42):");
+        trackDAO.createTrack(new Track(1, "Track 1", 42));
+        trackDAO.createTrack(new Track(2, "Track 2", 42));
+        trackDAO.createTrack(new Track (3, "Track 3", 42));
+        trackDAO.createTrack(new Track(4, "Track 1", 23));
+        trackDAO.createTrack(new Track(5, "Track 2", 23));
+        trackDAO.createTrack(new Track (6, "Track 3", 23));
+        log.info("Retrieving tracks from album id = 42:");
+        trackDAO.getTracksByAlbumId(42).forEach(track -> log.info(track.toString()));
+    
+        log.info("Creating album id 42 and album id 23:");
         albumDAO.createAlbum(new Album (42, "Album 1"));
+        albumDAO.createAlbum(new Album (23, "Album 2"));
+        log.info("Retrieving all albums:");
         albumDAO.getAllAlbums().forEach(album -> log.info(album.toString()));
+        
+
+        //getAlbum() getTrack() tests
+        log.info("\n\n\n");
+        log.info("Retrieving properties from album id = 42:");
+        log.info(albumDAO.getAlbum(42).toString());
+        log.info("Retrieving propertiestrack id = 2:");
+        log.info(trackDAO.getTrack(2).toString());
+
+        //getAllTracks() test
+        log.info("\n\n\n");
+        log.info("Retrieving all tracks:");
+        trackDAO.getAllTracks().forEach(track -> log.info(track.toString()));
+
 
     }
 }

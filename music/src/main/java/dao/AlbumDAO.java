@@ -28,8 +28,17 @@ public class AlbumDAO {
 
     public Album getAlbum(int id){
         Album album = new Album(id, "");
-        //TODO: Implement this CRUD function
-        //Get album and set tracks using getTracksByAlbumId(id) in TracksDAO
+        String sql = "SELECT title FROM albums WHERE id = ?";
+        String title = this.jdbcTemplate.queryForObject(sql, new Object[] {album.getId()}, String.class);
+        if (title != null)
+        {
+            album.setTitle(title);
+        }
+        else
+        {
+            album.setTitle("[no title]");
+        }
+
         return album;
     }
 
