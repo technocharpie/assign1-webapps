@@ -7,6 +7,9 @@ public class Album {
     private String title;
     private Collection<Track> tracks;
 
+
+
+
     public Album(int id, String title) {
         this.id = id;
         this.title = title;

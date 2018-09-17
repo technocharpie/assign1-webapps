@@ -13,8 +13,16 @@ public class AlbumDAO {
         this.jdbcTemplate = jdbcTemp;
     }
 
-    public Album createAlbum(Album album){
-        //TODO: Implement this CRUD function
+    public Album createAlbum(Album album) 
+    {
+        if (album != null)
+        {
+            String sql = "INSERT INTO albums VALUES (?, ?)";
+            int id = album.getId();
+            String title = album.getTitle();
+            this.jdbcTemplate.update(sql, id, title);
+        }
+
         return album;
     }
 

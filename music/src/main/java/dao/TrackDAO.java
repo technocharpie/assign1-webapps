@@ -12,10 +12,17 @@ public class TrackDAO {
     public TrackDAO(JdbcTemplate jdbcTemp) {
         this.jdbcTemplate = jdbcTemp;
     }
-
-
+    
     public Track createTrack(Track track){
-        //TODO: Implement this CRUD function
+        if (track != null)
+        {
+            String sql = "INSERT INTO tracks VALUES (?, ?, ?)";
+            int id = track.getId();
+            String title = track.getTitle();
+            int albumId = track.getAlbumId();
+            this.jdbcTemplate.update(sql, id, title, albumId);
+        }
+
         return track;
     }
 

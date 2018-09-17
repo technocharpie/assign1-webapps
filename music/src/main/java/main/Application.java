@@ -40,10 +40,13 @@ public class Application implements CommandLineRunner {
         trackDAO.createTrack(new Track("Track 1", 42));
         trackDAO.createTrack(new Track("Track 2", 42));
         trackDAO.createTrack(new Track ("Track 3", 42));
+        trackDAO.getTracksByAlbumId(42).forEach(track -> log.info(track.toString()));
+
 
         jdbcTemplate.execute("DROP TABLE IF EXISTS albums");
         jdbcTemplate.execute("CREATE TABLE albums(" +
                 "id INT, title VARCHAR(255))");
+
 
         albumDAO.createAlbum(new Album (42, "Album 1"));
         albumDAO.getAllAlbums().forEach(album -> log.info(album.toString()));
