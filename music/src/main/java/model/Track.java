@@ -4,46 +4,56 @@ public class Track {
     private int id, albumId;
     private String title ;
 
-    public Track(int id, String title, int albumId) {
+    public Track(int id, String title, int albumId)
+    {
         this.id = id;
         this.title = title;
         this.albumId = albumId;
     }
-    public Track(int id) {
+    public Track(int id) 
+    {
         this.id = id;
     }
 
-    public Track(String title, int albumId) {
+    public Track(String title, int albumId)
+    {
         this.title = title;
         this.albumId = albumId;
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public int getAlbumId() {
+    public int getAlbumId()
+    {
         return albumId;
     }
 
-    public void setAlbumId(int albumId) {
+    public void setAlbumId(int albumId)
+    {
         this.albumId = albumId;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
 
         return String.format(
                 "Track[id=%d, title='%s']",

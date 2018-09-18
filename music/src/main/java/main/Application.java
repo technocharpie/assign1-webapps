@@ -76,5 +76,30 @@ public class Application implements CommandLineRunner {
         trackDAO.getAllTracks().forEach(track -> log.info(track.toString()));
 
 
+        //updateTrack() updateAlbum() tests
+        log.info("\n\n\n");
+        log.info("Updating track id = 3 with title = 'Pop Song', albumId = 87");
+        trackDAO.updateTrack(new Track (3, "Pop Song", 87));
+        log.info("Retrieving properties for track id = 3");
+        log.info(trackDAO.getTrack(3).toString());
+        log.info("Updating track id = 7 with title = 'Pop Song2', albumId = 87");
+        trackDAO.updateTrack(new Track (7, "Pop Song2", 87));
+        log.info("Retrieving properties for track id = 7");
+        log.info(trackDAO.getTrack(7).toString());
+        log.info("Retrieving tracks from album id = 42:");
+        trackDAO.getTracksByAlbumId(42).forEach(track -> log.info(track.toString()));
+        log.info("Retrieving tracks from album id = 87:");
+        trackDAO.getTracksByAlbumId(87).forEach(track -> log.info(track.toString()));
+
+        //deleteTrack() deleteAlbum() tests
+        log.info("\n\n\n");
+        log.info("Deleting track id = 3, id = 7");
+        trackDAO.deleteTrack(new Track(3));
+        trackDAO.deleteTrack(new Track(7));
+        log.info("Retrieving tracks from album id = 87:");
+        trackDAO.getTracksByAlbumId(87).forEach(track -> log.info(track.toString()));
+        
+
+
     }
 }

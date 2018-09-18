@@ -6,32 +6,37 @@ import model.*;
 import java.util.Collection;
 import java.util.ArrayList;
 
-public class TrackDAO {
+public class TrackDAO 
+{
     private JdbcTemplate jdbcTemplate;
 
-    public TrackDAO(JdbcTemplate jdbcTemp) {
+    public TrackDAO(JdbcTemplate jdbcTemp) 
+    {
         this.jdbcTemplate = jdbcTemp;
     }
     
-    public Track createTrack(Track track){
+    public Track createTrack(Track track)
+    {
         if (track != null)
         {
-            String sql = "INSERT INTO tracks VALUES (?, ?, ?)";
-            int id = track.getId();
+            String sql   = "INSERT INTO tracks VALUES (?, ?, ?)";
+            int id       = track.getId();
             String title = track.getTitle();
-            int albumId = track.getAlbumId();
+            int albumId  = track.getAlbumId();
             this.jdbcTemplate.update(sql, id, title, albumId);
         }
 
         return track;
     }
 
-    public Track getTrack(int id){
-        Track track = new Track(id);
-        String sql1 = "SELECT title FROM tracks WHERE id = ?";
-        String sql2 = "SELECT album FROM tracks WHERE id = ?";
-        String title = this.jdbcTemplate.queryForObject(sql1, new Object[] {track.getId()}, String.class);
+    public Track getTrack(int id)
+    {
+        Track track    = new Track(id);
+        String sql1    = "SELECT title FROM tracks WHERE id = ?";
+        String sql2    = "SELECT album FROM tracks WHERE id = ?";
+        String title   = this.jdbcTemplate.queryForObject(sql1, new Object[] {track.getId()}, String.class);
         String albumId = this.jdbcTemplate.queryForObject(sql2, new Object[] {track.getId()}, String.class);
+
         if (title != null)
         {
             track.setTitle(title);
@@ -45,7 +50,8 @@ public class TrackDAO {
         return track;
     }
 
-    public Collection<Track> getAllTracks(){
+    public Collection<Track> getAllTracks()
+    {
         Collection<Track> tracks = new ArrayList<Track>();
         
         this.jdbcTemplate.query(
@@ -57,7 +63,8 @@ public class TrackDAO {
         return tracks;
     }
 
-    public Collection<Track> getTracksByAlbumId(int albumId){
+    public Collection<Track> getTracksByAlbumId(int albumId)
+    {
         Collection<Track> tracks = new ArrayList<Track>();
 
         this.jdbcTemplate.query(
@@ -67,14 +74,43 @@ public class TrackDAO {
 
         return tracks;
     }
-    public Track updateTrack(Track track){
-        //TODO: Implement this CRUD function
+    public Track updateTrack(Track track)
+    {
+        int id           = track.getId();
+        String title     = track.getTitle();
+        int albumId      = track.getAlbumId();
+
+        String sql_count = "SELECT COUNT(*) FROM tracks WHERE id = ?";
+        int rowCount     = this.jdbcTemplate.queryForObject(sql_count, new Object[] { id }, Integer.class);
+        
+
+        if (rowCount > 0)
+        {
+            String sql = "UPDATE tracks SET title = ?, album = ? WHERE id = ?";
+            this.jdbcTemplate.update(sql, title, albumId, id);
+        }
+        else
+        {
+            track = createTrack(track);
+        }
+
         return track;
     }
 
-    public boolean deleteTrack(Track track){
-        boolean success = false;
-        //TODO: Implement this CRUD function
+    public boolean deleteTrack(Track track)
+    {
+        boolean success  = false;
+        int id           = track.getId();
+        String sql_count = "SELECT COUNT(*) FROM tracks WHERE id = ?";
+        int rowCount     = this.jdbcTemplate.queryForObject(sql_count, new Object[] { id }, Integer.class);
+
+        if (rowCount == 0)
+            return success;
+
+        success = true;
+        String sql   = "DELETE FROM tracks WHERE id = ?";
+        this.jdbcTemplate.update(sql, id);
+
         return success;
     }
 
