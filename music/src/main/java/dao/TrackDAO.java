@@ -109,6 +109,7 @@ public class TrackDAO
 
         success = true;
         String sql   = "DELETE FROM tracks WHERE id = ?";
+        ;
         this.jdbcTemplate.update(sql, id);
 
         return success;
