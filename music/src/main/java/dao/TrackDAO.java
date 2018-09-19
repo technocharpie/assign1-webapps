@@ -31,22 +31,20 @@ public class TrackDAO
 
     public Track getTrack(int id)
     {
-        Track track    = new Track(id);
-        String sql1    = "SELECT title FROM tracks WHERE id = ?";
-        String sql2    = "SELECT album FROM tracks WHERE id = ?";
-        String title   = this.jdbcTemplate.queryForObject(sql1, new Object[] {track.getId()}, String.class);
-        String albumId = this.jdbcTemplate.queryForObject(sql2, new Object[] {track.getId()}, String.class);
+        Track track      = new Track(id);
+        String sql_count = "SELECT COUNT(*) FROM tracks WHERE id = ?";
+        int rowCount     = this.jdbcTemplate.queryForObject(sql_count, new Object[] { id }, Integer.class);
 
-        if (title != null)
+        if (rowCount > 0)
         {
+            String sql1    = "SELECT title FROM tracks WHERE id = ?";
+            String sql2    = "SELECT album FROM tracks WHERE id = ?";
+            String title   = this.jdbcTemplate.queryForObject(sql1, new Object[] { id }, String.class);
+            String albumId = this.jdbcTemplate.queryForObject(sql2, new Object[] { id }, String.class);
             track.setTitle(title);
             track.setAlbumId(Integer.parseInt(albumId));
         }
-        else
-        {
-            track.setTitle("[no title]");
-            track.setAlbumId(0);
-        }
+
         return track;
     }
 
@@ -56,7 +54,7 @@ public class TrackDAO
         
         this.jdbcTemplate.query(
                 "SELECT * FROM tracks", new Object[] { },
-                (rs, rowNum) -> new Track(rs.getInt("id"), rs.getString("title"), rs.getInt("album"))
+                (rs, rowNum) -> this.getTrack(rs.getInt("id"))
         ).forEach(track -> tracks.add(track));
 
 
@@ -70,7 +68,7 @@ public class TrackDAO
         this.jdbcTemplate.query(
                 "SELECT id, title FROM tracks WHERE album = ?", new Object[] { albumId },
                 (rs, rowNum) -> new Track(rs.getInt("id"), rs.getString("title"),albumId)
-        ).forEach(track -> tracks.add(track) );
+        ).forEach(track -> tracks.add(track));
 
         return tracks;
     }
@@ -109,7 +107,6 @@ public class TrackDAO
 
         success = true;
         String sql   = "DELETE FROM tracks WHERE id = ?";
-        ;
         this.jdbcTemplate.update(sql, id);
 
         return success;

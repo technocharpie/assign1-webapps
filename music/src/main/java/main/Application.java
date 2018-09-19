@@ -67,7 +67,7 @@ public class Application implements CommandLineRunner {
         log.info("\n\n\n");
         log.info("Retrieving properties from album id = 42:");
         log.info(albumDAO.getAlbum(42).toString());
-        log.info("Retrieving propertiestrack id = 2:");
+        log.info("Retrieving properties track id = 2:");
         log.info(trackDAO.getTrack(2).toString());
 
         //getAllTracks() test
@@ -90,16 +90,23 @@ public class Application implements CommandLineRunner {
         trackDAO.getTracksByAlbumId(42).forEach(track -> log.info(track.toString()));
         log.info("Retrieving tracks from album id = 87:");
         trackDAO.getTracksByAlbumId(87).forEach(track -> log.info(track.toString()));
+        log.info("Updating album id = 23 with title = 'Emmy-winning'");
+        albumDAO.updateAlbum(new Album (23, "Emmy-winning"));
+        log.info("Retrieving properties for album id = 23");
+        log.info(albumDAO.getAlbum(23).toString());
+
 
         //deleteTrack() deleteAlbum() tests
         log.info("\n\n\n");
-        log.info("Deleting track id = 3, id = 7");
+        log.info("Deleting tracks id = 3, id = 7");
         trackDAO.deleteTrack(new Track(3));
         trackDAO.deleteTrack(new Track(7));
         log.info("Retrieving tracks from album id = 87:");
         trackDAO.getTracksByAlbumId(87).forEach(track -> log.info(track.toString()));
-        
-
-
+        log.info("Deleting albums id = 23, id = 42");
+        albumDAO.deleteAlbum(new Album(23, ""));
+        albumDAO.deleteAlbum(new Album(42, ""));
+        log.info("Retrieving all albums:");
+        albumDAO.getAllAlbums().forEach(album -> log.info(album.toString()));
     }
 }
